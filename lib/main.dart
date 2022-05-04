@@ -206,7 +206,7 @@ class _MyAppState extends State<MyApp> {
                       child: Card(
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: Text("Price"),
+                          child: Text("Price Of One Unit"),
                         ),
                       ),
                     ),
@@ -290,7 +290,7 @@ class _MyAppState extends State<MyApp> {
                       },
                       child: Container(
                         child: const Center(
-                            child: Text("Download Sales Invoice",
+                            child: Text("Download Tax Invoice",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20))),

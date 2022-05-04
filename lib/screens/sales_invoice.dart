@@ -25,7 +25,7 @@ class _SalesInvoiceState extends State<SalesInvoice> {
   void initState() {
     super.initState();
     getPermission();
-
+    getQty();
     for (var element in price) {
       amount += element * quantity[price.indexOf(element)];
     }
@@ -37,6 +37,7 @@ class _SalesInvoiceState extends State<SalesInvoice> {
   double cgstAmount = 0;
   double sgstAmount = 0;
   double totalTax = 0;
+  int totalQty = 0;
 
   getTaxableAmount() {
     for (int i = 0; i < hsn.length; ++i) {
@@ -46,6 +47,12 @@ class _SalesInvoiceState extends State<SalesInvoice> {
         tax[hsn[i]] =
             tax[hsn[i]]! + double.parse((quantity[i] * price[i]).toString());
       }
+    }
+  }
+
+  getQty() {
+    for (var element in quantity) {
+      totalQty += element;
     }
   }
 
@@ -78,7 +85,7 @@ class _SalesInvoiceState extends State<SalesInvoice> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 0.75),
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
@@ -131,42 +138,52 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                             Container(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    "  GSTIN : 09AHRPA5442J2Z2",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Text(
+                                        "  GSTIN : 09AHRPA5442J2Z2",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const Spacer(),
+                                      SizedBox(
+                                          height: 40,
+                                          width: 40,
+                                          child:
+                                              Image.asset("assets/ne@4x.png"))
+                                    ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
-                                  Center(
+                                  const Center(
                                     child: Text(
-                                      "SALES INVOICE",
+                                      "TAX INVOICE",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
                                           decoration: TextDecoration.underline),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
-                                  Center(
+                                  const Center(
                                       child: Text("NEERAJ ELECTRONICS",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 22,
                                           ))),
-                                  Center(
+                                  const Center(
                                     child: Text(
                                       "OLD TANKI ROAD, BISAULI",
                                       style: TextStyle(fontSize: 18),
                                     ),
                                   ),
-                                  Center(
+                                  const Center(
                                     child: Text(
-                                      "Tel. : 9927387458",
+                                      "Tel. : 9927387458,  Email Id: sji.elec@gmail.com",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15),
@@ -286,8 +303,8 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
-                                                      children: const [
-                                                        Text(
+                                                      children: [
+                                                        const Text(
                                                           "Shipped to  :",
                                                           style: TextStyle(
                                                               fontWeight:
@@ -297,16 +314,26 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                                                   FontStyle
                                                                       .italic),
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 5,
                                                         ),
                                                         Text(
-                                                          "NEERAJ AGARWAL,",
-                                                          style: TextStyle(),
+                                                          "$name,",
+                                                          style:
+                                                              const TextStyle(),
                                                         ),
                                                         Text(
-                                                          "BISAULI",
-                                                          style: TextStyle(),
+                                                          "$address,",
+                                                          style:
+                                                              const TextStyle(),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Text(
+                                                          "GSTIN/UIN :  $gstIn",
+                                                          style:
+                                                              const TextStyle(),
                                                         )
                                                       ],
                                                     ),
@@ -334,7 +361,7 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                        flex: 1,
+                                        flex: 2,
                                         child: Container(
                                           decoration: const BoxDecoration(
                                               border:
@@ -370,7 +397,7 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                           ),
                                         )),
                                     Expanded(
-                                        flex: 6,
+                                        flex: 10,
                                         child: Container(
                                           decoration: const BoxDecoration(
                                               border:
@@ -399,7 +426,11 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                                       const EdgeInsets.all(2.0),
                                                   child: Column(
                                                     children: [
-                                                      Text(e),
+                                                      Text(e,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize:
+                                                                      12)),
                                                       const SizedBox(
                                                         height: 5,
                                                       ),
@@ -411,7 +442,7 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                           ),
                                         )),
                                     Expanded(
-                                        flex: 3,
+                                        flex: 4,
                                         child: Container(
                                           decoration: const BoxDecoration(
                                               border:
@@ -450,7 +481,7 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                           ),
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        flex: 2,
                                         child: Container(
                                           decoration: const BoxDecoration(
                                               border:
@@ -485,7 +516,7 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                           ),
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        flex: 2,
                                         child: Container(
                                           decoration: const BoxDecoration(
                                               border:
@@ -611,9 +642,21 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                               child: Row(
                                 children: [
                                   const Expanded(
-                                    flex: 11,
+                                    flex: 8,
                                     child: Center(
                                       child: Text("Grand Total"),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                          border: Border(
+                                              left: BorderSide(),
+                                              right: BorderSide())),
+                                      child: Center(
+                                        child: Text(totalQty.toString()),
+                                      ),
                                     ),
                                   ),
                                   Expanded(
@@ -689,7 +732,14 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold)),
                                           ...tax.values.map((e) {
-                                            taxableAmount += e * 100 / 118;
+                                            if (tax.values
+                                                    .toList()
+                                                    .indexOf(e) ==
+                                                0) {
+                                              taxableAmount = 0;
+                                            }
+                                            taxableAmount =
+                                                taxableAmount + (e * 100 / 118);
                                             return Text((e * 100 / 118)
                                                 .toStringAsFixed(2));
                                           }).toList(),
@@ -713,6 +763,12 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold)),
                                           ...tax.values.map((e) {
+                                            if (tax.values
+                                                    .toList()
+                                                    .indexOf(e) ==
+                                                0) {
+                                              cgstAmount = 0;
+                                            }
                                             cgstAmount +=
                                                 (e * 100 / 118) * 18 / 200;
                                             return Text(
@@ -739,6 +795,12 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold)),
                                           ...tax.values.map((e) {
+                                            if (tax.values
+                                                    .toList()
+                                                    .indexOf(e) ==
+                                                0) {
+                                              sgstAmount = 0;
+                                            }
                                             sgstAmount +=
                                                 (e * 100 / 118) * 18 / 200;
                                             return Text(
@@ -765,6 +827,12 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold)),
                                           ...tax.values.map((e) {
+                                            if (tax.values
+                                                    .toList()
+                                                    .indexOf(e) ==
+                                                0) {
+                                              totalTax = 0;
+                                            }
                                             totalTax +=
                                                 (e * 100 / 118) * 18 / 100;
                                             return Text(
@@ -801,12 +869,10 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                               decoration: const BoxDecoration(
                                 border: Border(bottom: BorderSide()),
                               ),
-                              child: const Expanded(
-                                child: Text(
-                                  "Bank Details : PNB Bank IFSC Code: PUNB0168810 AC NO.: 16881132001900",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              child: const Text(
+                                "Bank Details : PNB Bank IFSC Code: PUNB0168810 AC NO.: 16881132001900",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
@@ -854,6 +920,12 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ],
+                                        ),
+                                        const Spacer(),
+                                        const Text(
+                                          "Authorized Signature",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ],
                                     ),
