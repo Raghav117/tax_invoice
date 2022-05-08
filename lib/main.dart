@@ -233,33 +233,6 @@ class _MyAppState extends State<MyApp> {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Center(
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("GST No."),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: SizedBox(
-                        height: 40,
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            counterText: "GST Number",
-                          ),
-                          textCapitalization: TextCapitalization.characters,
-                          onChanged: (value) {
-                            gstIn = value;
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: const [
                     Center(
                       child: Card(
