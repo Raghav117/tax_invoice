@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Sales Invoice"),
+          title: const Text("Tax Invoice"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -58,6 +58,9 @@ class _MyAppState extends State<MyApp> {
                         height: 40,
                         child: TextField(
                           keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            counterText: "Invoice Number",
+                          ),
                           onChanged: (value) {
                             invoice = value;
                           },
@@ -81,6 +84,9 @@ class _MyAppState extends State<MyApp> {
                       child: SizedBox(
                         height: 40,
                         child: TextField(
+                          decoration: const InputDecoration(
+                            counterText: "Date Of Invoice",
+                          ),
                           keyboardType: TextInputType.datetime,
                           onChanged: (value) {
                             date = value;
@@ -105,6 +111,9 @@ class _MyAppState extends State<MyApp> {
                       child: SizedBox(
                         height: 40,
                         child: TextField(
+                          decoration: const InputDecoration(
+                            counterText: "Name",
+                          ),
                           textCapitalization: TextCapitalization.characters,
                           onChanged: (value) {
                             name = value;
@@ -129,6 +138,9 @@ class _MyAppState extends State<MyApp> {
                       child: SizedBox(
                         height: 40,
                         child: TextField(
+                          decoration: const InputDecoration(
+                            counterText: "Address",
+                          ),
                           textCapitalization: TextCapitalization.characters,
                           onChanged: (value) {
                             address = value;
@@ -153,6 +165,90 @@ class _MyAppState extends State<MyApp> {
                       child: SizedBox(
                         height: 40,
                         child: TextField(
+                          decoration: const InputDecoration(
+                            counterText: "GST Number",
+                          ),
+                          textCapitalization: TextCapitalization.characters,
+                          onChanged: (value) {
+                            gstIn = value;
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Center(
+                      child: Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("CGST"),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: SizedBox(
+                        height: 40,
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            counterText: "CGST",
+                          ),
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) {
+                            cgst = int.tryParse(value)!;
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Center(
+                      child: Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("SGST"),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: SizedBox(
+                        height: 40,
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            counterText: "SGST",
+                          ),
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) {
+                            sgst = int.tryParse(value)!;
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Center(
+                      child: Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("GST No."),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: SizedBox(
+                        height: 40,
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            counterText: "GST Number",
+                          ),
                           textCapitalization: TextCapitalization.characters,
                           onChanged: (value) {
                             gstIn = value;
@@ -182,6 +278,9 @@ class _MyAppState extends State<MyApp> {
                       child: TextField(
                         maxLines: 5,
                         minLines: 2,
+                        decoration: InputDecoration(
+                          counterText: "Serioul ${i + 1}",
+                        ),
                         textCapitalization: TextCapitalization.characters,
                         onChanged: (value) {
                           goods[i] = value;
@@ -190,6 +289,7 @@ class _MyAppState extends State<MyApp> {
                     ),
                   ),
                 IconButton(
+                    color: Colors.redAccent,
                     onPressed: () {
                       goods.add("");
                       price.add(0);
@@ -216,6 +316,9 @@ class _MyAppState extends State<MyApp> {
                           constraints: const BoxConstraints(minHeight: 60),
                           child: TextField(
                             keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              counterText: "Amount ${i + 1}",
+                            ),
                             onChanged: (value) {
                               price[i] = int.tryParse(value)!;
                             },
@@ -270,6 +373,9 @@ class _MyAppState extends State<MyApp> {
                                 constraints:
                                     const BoxConstraints(minHeight: 60),
                                 child: TextField(
+                                  decoration: InputDecoration(
+                                    counterText: "HSN Code ${i + 1}",
+                                  ),
                                   keyboardType: TextInputType.number,
                                   onChanged: (value) {
                                     hsn[i] = value;
@@ -297,7 +403,7 @@ class _MyAppState extends State<MyApp> {
                         width: 250,
                         height: 50,
                         decoration: BoxDecoration(
-                            color: Colors.yellow,
+                            color: Colors.redAccent,
                             borderRadius: BorderRadius.circular(20)),
                       ),
                     )

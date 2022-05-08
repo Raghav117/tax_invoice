@@ -712,7 +712,7 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold)),
                                           ...List.generate(tax.length, (index) {
-                                            return const Text("18%");
+                                            return Text("${cgst + sgst}");
                                           }),
                                           const Text(" ",
                                               style: TextStyle(
@@ -738,10 +738,11 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                                 0) {
                                               taxableAmount = 0;
                                             }
-                                            taxableAmount =
-                                                taxableAmount + (e * 100 / 118);
-                                            return Text((e * 100 / 118)
-                                                .toStringAsFixed(2));
+                                            taxableAmount = taxableAmount +
+                                                (e * 100 / (100 + cgst + sgst));
+                                            return Text(
+                                                (e * 100 / (100 + cgst + sgst))
+                                                    .toStringAsFixed(2));
                                           }).toList(),
                                           Text(
                                             taxableAmount.toStringAsFixed(2),
@@ -769,11 +770,17 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                                 0) {
                                               cgstAmount = 0;
                                             }
-                                            cgstAmount +=
-                                                (e * 100 / 118) * 18 / 200;
-                                            return Text(
-                                                ((e * 100 / 118) * 18 / 200)
-                                                    .toStringAsFixed(2));
+                                            cgstAmount += (e *
+                                                    100 /
+                                                    (100 + cgst + sgst)) *
+                                                cgst /
+                                                100;
+                                            return Text(((e *
+                                                        100 /
+                                                        (100 + cgst + sgst)) *
+                                                    cgst /
+                                                    100)
+                                                .toStringAsFixed(2));
                                           }).toList(),
                                           Text(
                                             cgstAmount.toStringAsFixed(2),
@@ -801,11 +808,17 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                                 0) {
                                               sgstAmount = 0;
                                             }
-                                            sgstAmount +=
-                                                (e * 100 / 118) * 18 / 200;
-                                            return Text(
-                                                ((e * 100 / 118) * 18 / 200)
-                                                    .toStringAsFixed(2));
+                                            sgstAmount += (e *
+                                                    100 /
+                                                    (100 + cgst + sgst)) *
+                                                sgst /
+                                                100;
+                                            return Text(((e *
+                                                        100 /
+                                                        (100 + cgst + sgst)) *
+                                                    sgst /
+                                                    100)
+                                                .toStringAsFixed(2));
                                           }).toList(),
                                           Text(
                                             sgstAmount.toStringAsFixed(2),
@@ -833,11 +846,17 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                                 0) {
                                               totalTax = 0;
                                             }
-                                            totalTax +=
-                                                (e * 100 / 118) * 18 / 100;
-                                            return Text(
-                                                ((e * 100 / 118) * 18 / 100)
-                                                    .toStringAsFixed(2));
+                                            totalTax += (e *
+                                                    100 /
+                                                    (100 + cgst + sgst)) *
+                                                (cgst + sgst) /
+                                                100;
+                                            return Text(((e *
+                                                        100 /
+                                                        (100 + cgst + sgst)) *
+                                                    (cgst + sgst) /
+                                                    100)
+                                                .toStringAsFixed(2));
                                           }).toList(),
                                           Text(
                                             totalTax.toStringAsFixed(2),

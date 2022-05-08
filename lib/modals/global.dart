@@ -1,6 +1,7 @@
 String invoice = "";
 String name = "";
 String address = "";
+int sgst = 1, cgst = 1;
 
 String date = "";
 List<String> goods = [""];
