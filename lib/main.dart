@@ -7,11 +7,10 @@ import 'package:screenshot/screenshot.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart' as provider;
 import 'package:tax_invoice/modals/global.dart';
-
 import 'screens/sales_invoice.dart';
 
 void main() {
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
     home: MyApp(),
     title: "Sales Invoice",
   ));
@@ -55,7 +54,6 @@ class _MyAppState extends State<MyApp> {
                     ),
                     Center(
                       child: SizedBox(
-                        height: 40,
                         child: TextField(
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
@@ -82,7 +80,6 @@ class _MyAppState extends State<MyApp> {
                     ),
                     Center(
                       child: SizedBox(
-                        height: 40,
                         child: TextField(
                           decoration: const InputDecoration(
                             counterText: "Date Of Invoice",
@@ -109,7 +106,6 @@ class _MyAppState extends State<MyApp> {
                     ),
                     Center(
                       child: SizedBox(
-                        height: 40,
                         child: TextField(
                           decoration: const InputDecoration(
                             counterText: "Name",
@@ -136,7 +132,6 @@ class _MyAppState extends State<MyApp> {
                     ),
                     Center(
                       child: SizedBox(
-                        height: 40,
                         child: TextField(
                           decoration: const InputDecoration(
                             counterText: "Address",
@@ -163,7 +158,6 @@ class _MyAppState extends State<MyApp> {
                     ),
                     Center(
                       child: SizedBox(
-                        height: 40,
                         child: TextField(
                           decoration: const InputDecoration(
                             counterText: "GST Number",
@@ -190,7 +184,6 @@ class _MyAppState extends State<MyApp> {
                     ),
                     Center(
                       child: SizedBox(
-                        height: 40,
                         child: TextField(
                           decoration: const InputDecoration(
                             counterText: "CGST",
@@ -217,7 +210,6 @@ class _MyAppState extends State<MyApp> {
                     ),
                     Center(
                       child: SizedBox(
-                        height: 40,
                         child: TextField(
                           decoration: const InputDecoration(
                             counterText: "SGST",

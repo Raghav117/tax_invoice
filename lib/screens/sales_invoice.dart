@@ -65,7 +65,6 @@ class _SalesInvoiceState extends State<SalesInvoice> {
     var status = await Permission.storage.status;
     if (status.isDenied) {
       await Permission.storage.request();
-      getPermissionStorage();
     } else {
       // getPermissionManageStorage();
     }
@@ -75,7 +74,6 @@ class _SalesInvoiceState extends State<SalesInvoice> {
     var status = await Permission.manageExternalStorage.status;
     if (status.isDenied) {
       await Permission.manageExternalStorage.request();
-      getPermissionManageStorage();
     }
   }
 
@@ -126,7 +124,7 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                   controller: screenshotController,
                   child: Container(
                       color: Colors.white,
-                      width: MediaQuery.of(context).size.width * 2,
+                      width: MediaQuery.of(context).size.width * 1.5,
                       padding: const EdgeInsets.all(20),
                       child: Container(
                         decoration: BoxDecoration(
@@ -135,223 +133,11 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Text(
-                                        "  GSTIN : 09AHRPA5442J2Z2",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const Spacer(),
-                                      SizedBox(
-                                          height: 40,
-                                          width: 40,
-                                          child:
-                                              Image.asset("assets/ne@4x.png"))
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  const Center(
-                                    child: Text(
-                                      "TAX INVOICE",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          decoration: TextDecoration.underline),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  const Center(
-                                      child: Text("NEERAJ ELECTRONICS",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 22,
-                                          ))),
-                                  const Center(
-                                    child: Text(
-                                      "OLD TANKI ROAD, BISAULI",
-                                      style: TextStyle(fontSize: 18),
-                                    ),
-                                  ),
-                                  const Center(
-                                    child: Text(
-                                      "Tel. : 9927387458,  Email Id: sji.elec@gmail.com",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                            TopSection(),
                             const SizedBox(
                               height: 10,
                             ),
-                            Container(
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                      child: Container(
-                                    decoration:
-                                        BoxDecoration(border: Border.all()),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.all(4),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  const Expanded(
-                                                    flex: 1,
-                                                    child: Text("Invoice No."),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Text(": $invoice"),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  const Expanded(
-                                                    flex: 1,
-                                                    child:
-                                                        Text("Date of Invoice"),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Text(": $date"),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const Divider(
-                                          color: Colors.black,
-                                          thickness: 0.5,
-                                        ),
-                                        Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    padding:
-                                                        const EdgeInsets.all(4),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        const Text(
-                                                          "Billed to  :",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .italic),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 5,
-                                                        ),
-                                                        Text(
-                                                          "$name,",
-                                                          style:
-                                                              const TextStyle(),
-                                                        ),
-                                                        Text(
-                                                          "$address,",
-                                                          style:
-                                                              const TextStyle(),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Text(
-                                                          "GSTIN/UIN :  $gstIn",
-                                                          style:
-                                                              const TextStyle(),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Container(
-                                                    decoration: const BoxDecoration(
-                                                        border: Border(
-                                                            left: BorderSide(
-                                                                color: Colors
-                                                                    .black))),
-                                                    padding:
-                                                        const EdgeInsets.all(4),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        const Text(
-                                                          "Shipped to  :",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .italic),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 5,
-                                                        ),
-                                                        Text(
-                                                          "$name,",
-                                                          style:
-                                                              const TextStyle(),
-                                                        ),
-                                                        Text(
-                                                          "$address,",
-                                                          style:
-                                                              const TextStyle(),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Text(
-                                                          "GSTIN/UIN :  $gstIn",
-                                                          style:
-                                                              const TextStyle(),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  )),
-                                ],
-                              ),
-                            ),
+                            Section2(),
                             Expanded(
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -642,47 +428,8 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                 ),
                               ),
                             ),
-                            Container(
-                              height: 50,
-                              decoration: const BoxDecoration(
-                                  border: Border(bottom: BorderSide())),
-                              child: Row(
-                                children: [
-                                  const Expanded(
-                                    flex: 10,
-                                    child: Center(
-                                      child: Text("Grand Total"),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 3,
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                          border: Border(
-                                              left: BorderSide(),
-                                              right: BorderSide())),
-                                      child: Center(
-                                        child: Text(
-                                            'Total Qty ' + totalQty.toString()),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(flex: 2, child: SizedBox.expand()),
-                                  Expanded(
-                                    flex: 3,
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                          border: Border(
-                                              left: BorderSide(),
-                                              right: BorderSide())),
-                                      child: Center(
-                                        child: Text('₹' + amount.toString()),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            GrandTotalSection(
+                                totalQty: totalQty, amount: amount),
                             const SizedBox(
                               height: 10,
                             ),
@@ -882,90 +629,354 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                             const SizedBox(
                               height: 10,
                             ),
-                            Text(
-                              "RUPEES " +
-                                  NumberToWordsEnglish.convert(amount)
-                                      .toUpperCase() +
-                                  " ONLY",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline),
-                            ),
-                            Container(
-                              height: 50,
-                              padding: const EdgeInsets.all(4),
-                              decoration: const BoxDecoration(
-                                border: Border(bottom: BorderSide()),
-                              ),
-                              child: const Text(
-                                "Bank Details : PNB Bank IFSC Code: PUNB0168810 AC NO.: 1688108700000403",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 100,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                      child: Container(
-                                    decoration: const BoxDecoration(
-                                        border: Border(right: BorderSide())),
-                                    padding: const EdgeInsets.all(4),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: const [
-                                        Text(
-                                            "1. Goods once sold will not be taken back."),
-                                        Text(
-                                            "2. Subject to 'Bisauli District Badaun Uttar Pradesh' Juridiction only."),
-                                      ],
-                                    ),
-                                  )),
-                                  Expanded(
-                                      child: Container(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text("Reciever's Signature"),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        const Divider(
-                                          thickness: 0.5,
-                                          color: Colors.black,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: const [
-                                            Text(
-                                              "For NEERAJ ELECTRONICS",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                        const Spacer(),
-                                        const Text(
-                                          "Authorized Signature",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ))
-                                ],
-                              ),
-                            ),
+                            LastSection(amount: amount)
                           ],
                         ),
                       )),
                 ),
               ),
+      ),
+    );
+  }
+}
+
+class LastSection extends StatelessWidget {
+  const LastSection({
+    Key? key,
+    required this.amount,
+  }) : super(key: key);
+
+  final int amount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          "RUPEES " +
+              NumberToWordsEnglish.convert(amount).toUpperCase() +
+              " ONLY",
+          style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline),
+        ),
+        Container(
+          height: 50,
+          padding: const EdgeInsets.all(4),
+          decoration: const BoxDecoration(
+            border: Border(bottom: BorderSide()),
+          ),
+          child: const Text(
+            "Bank Details : PNB Bank IFSC Code: PUNB0168810 AC NO.: 1688108700000403",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 100,
+          child: Row(
+            children: [
+              Expanded(
+                  child: Container(
+                decoration:
+                    const BoxDecoration(border: Border(right: BorderSide())),
+                padding: const EdgeInsets.all(4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text("1. Goods once sold will not be taken back."),
+                    Text(
+                        "2. Subject to 'Bisauli District Badaun Uttar Pradesh' Juridiction only."),
+                  ],
+                ),
+              )),
+              Expanded(
+                  child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Reciever's Signature"),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Divider(
+                      thickness: 0.5,
+                      color: Colors.black,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: const [
+                        Text(
+                          "For NEERAJ ELECTRONICS",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    const Text(
+                      "Authorized Signature",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ))
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class GrandTotalSection extends StatelessWidget {
+  const GrandTotalSection({
+    Key? key,
+    required this.totalQty,
+    required this.amount,
+  }) : super(key: key);
+
+  final int totalQty;
+  final int amount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      decoration: const BoxDecoration(border: Border(bottom: BorderSide())),
+      child: Row(
+        children: [
+          const Expanded(
+            flex: 10,
+            child: Center(
+              child: Text("Grand Total"),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Container(
+              decoration: const BoxDecoration(
+                  border: Border(left: BorderSide(), right: BorderSide())),
+              child: Center(
+                child: Text('Total Qty ' + totalQty.toString()),
+              ),
+            ),
+          ),
+          Expanded(flex: 2, child: SizedBox.expand()),
+          Expanded(
+            flex: 3,
+            child: Container(
+              decoration: const BoxDecoration(
+                  border: Border(left: BorderSide(), right: BorderSide())),
+              child: Center(
+                child: Text('₹' + amount.toString()),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Section2 extends StatelessWidget {
+  const Section2({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: [
+          Expanded(
+              child: Container(
+            decoration: BoxDecoration(border: Border.all()),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Expanded(
+                            flex: 1,
+                            child: Text("Invoice No."),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(": $invoice"),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Expanded(
+                            flex: 1,
+                            child: Text("Date of Invoice"),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(": $date"),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  color: Colors.black,
+                  thickness: 0.5,
+                ),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Billed to  :",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FontStyle.italic),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "$name,",
+                                  style: const TextStyle(),
+                                ),
+                                Text(
+                                  "$address,",
+                                  style: const TextStyle(),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "GSTIN/UIN :  $gstIn",
+                                  style: const TextStyle(),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                                border: Border(
+                                    left: BorderSide(color: Colors.black))),
+                            padding: const EdgeInsets.all(4),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Shipped to  :",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FontStyle.italic),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "$name,",
+                                  style: const TextStyle(),
+                                ),
+                                Text(
+                                  "$address,",
+                                  style: const TextStyle(),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "GSTIN/UIN :  $gstIn",
+                                  style: const TextStyle(),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    )
+                  ],
+                ),
+              ],
+            ),
+          )),
+        ],
+      ),
+    );
+  }
+}
+
+class TopSection extends StatelessWidget {
+  const TopSection({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Text(
+                "  GSTIN : 09AHRPA5442J2Z2",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              SizedBox(
+                  height: 40, width: 40, child: Image.asset("assets/ne@4x.png"))
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Center(
+            child: Text(
+              "TAX INVOICE",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  decoration: TextDecoration.underline),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Center(
+              child: Text("NEERAJ ELECTRONICS",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                  ))),
+          const Center(
+            child: Text(
+              "OLD TANKI ROAD, BISAULI",
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          const Center(
+            child: Text(
+              "Tel. : 9927387458,  Email Id: sji.elec@gmail.com",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            ),
+          )
+        ],
       ),
     );
   }
