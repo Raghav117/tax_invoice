@@ -126,7 +126,7 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                   controller: screenshotController,
                   child: Container(
                       color: Colors.white,
-                      width: MediaQuery.of(context).size.width * 1.5,
+                      width: MediaQuery.of(context).size.width * 2,
                       padding: const EdgeInsets.all(20),
                       child: Container(
                         decoration: BoxDecoration(
@@ -616,11 +616,18 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                                   padding:
                                                       const EdgeInsets.all(2.0),
                                                   child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
                                                     children: [
-                                                      Text((e *
-                                                              quantity[price
-                                                                  .indexOf(e)])
-                                                          .toString()),
+                                                      Text('₹' +
+                                                          (e *
+                                                                  quantity[price
+                                                                      .indexOf(
+                                                                          e)])
+                                                              .toString()),
                                                       const SizedBox(
                                                         height: 5,
                                                       ),
@@ -642,32 +649,34 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                               child: Row(
                                 children: [
                                   const Expanded(
-                                    flex: 8,
+                                    flex: 10,
                                     child: Center(
                                       child: Text("Grand Total"),
                                     ),
                                   ),
                                   Expanded(
-                                    flex: 1,
+                                    flex: 3,
                                     child: Container(
                                       decoration: const BoxDecoration(
                                           border: Border(
                                               left: BorderSide(),
                                               right: BorderSide())),
                                       child: Center(
-                                        child: Text(totalQty.toString()),
+                                        child: Text(
+                                            'Total Qty ' + totalQty.toString()),
                                       ),
                                     ),
                                   ),
+                                  Expanded(flex: 2, child: SizedBox.expand()),
                                   Expanded(
-                                    flex: 4,
+                                    flex: 3,
                                     child: Container(
                                       decoration: const BoxDecoration(
                                           border: Border(
                                               left: BorderSide(),
                                               right: BorderSide())),
                                       child: Center(
-                                        child: Text(amount.toString()),
+                                        child: Text('₹' + amount.toString()),
                                       ),
                                     ),
                                   ),
@@ -889,7 +898,7 @@ class _SalesInvoiceState extends State<SalesInvoice> {
                                 border: Border(bottom: BorderSide()),
                               ),
                               child: const Text(
-                                "Bank Details : PNB Bank IFSC Code: PUNB0168810 AC NO.: 16881132001900",
+                                "Bank Details : PNB Bank IFSC Code: PUNB0168810 AC NO.: 1688108700000403",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
