@@ -6,6 +6,7 @@ import 'package:tax_invoice/functionality/convert_number.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart' as provider;
+import 'package:tax_invoice/functionality/database_operations.dart';
 import 'package:tax_invoice/modals/global.dart';
 import 'screens/sales_invoice.dart';
 
@@ -27,6 +28,12 @@ class _MyAppState extends State<MyApp> {
   int sNo = 1;
 
   @override
+  void initState() {
+    ExcelDatabaseOperations.readExcelFile();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
@@ -41,338 +48,454 @@ class _MyAppState extends State<MyApp> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Center(
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("Invoice"),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: SizedBox(
-                        child: TextField(
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            counterText: "Invoice Number",
-                          ),
-                          onChanged: (value) {
-                            invoice = value;
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Center(
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("Date Of Invoice"),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: SizedBox(
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            counterText: "Date Of Invoice",
-                          ),
-                          keyboardType: TextInputType.datetime,
-                          onChanged: (value) {
-                            date = value;
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Center(
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("Name"),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: SizedBox(
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            counterText: "Name",
-                          ),
-                          textCapitalization: TextCapitalization.characters,
-                          onChanged: (value) {
-                            name = value;
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Center(
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("Address"),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: SizedBox(
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            counterText: "Address",
-                          ),
-                          textCapitalization: TextCapitalization.characters,
-                          onChanged: (value) {
-                            address = value;
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Center(
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("GST No."),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: SizedBox(
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            counterText: "GST Number",
-                          ),
-                          textCapitalization: TextCapitalization.characters,
-                          onChanged: (value) {
-                            gstIn = value;
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Center(
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("CGST"),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: SizedBox(
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            counterText: "CGST",
-                          ),
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            cgst = int.tryParse(value)!;
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Center(
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("SGST"),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: SizedBox(
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            counterText: "SGST",
-                          ),
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            sgst = int.tryParse(value)!;
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Center(
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("S.No."),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                for (int i = 0; i < sNo; ++i)
-                  Center(
-                    child: Container(
-                      constraints: const BoxConstraints(minHeight: 60),
-                      child: TextField(
-                        maxLines: 5,
-                        minLines: 2,
-                        decoration: InputDecoration(
-                          counterText: "Serioul ${i + 1}",
-                        ),
-                        textCapitalization: TextCapitalization.characters,
-                        onChanged: (value) {
-                          goods[i] = value;
-                        },
-                      ),
-                    ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(8),
+                  margin: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.orangeAccent.withOpacity(0.7),
                   ),
-                IconButton(
-                    color: Colors.redAccent,
-                    onPressed: () {
-                      goods.add("");
-                      price.add(0);
-                      quantity.add(1);
-                      hsn.add("");
-                      ++sNo;
-                      setState(() {});
-                    },
-                    icon: const Icon(Icons.add)),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Center(
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("Price Of One Unit"),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Center(
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("Invoice"),
+                          ),
                         ),
                       ),
-                    ),
-                    for (int i = 0; i < price.length; ++i)
                       Center(
-                        child: Container(
-                          constraints: const BoxConstraints(minHeight: 60),
+                        child: SizedBox(
                           child: TextField(
                             keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              counterText: "Amount ${i + 1}",
+                            decoration: const InputDecoration(
+                              counterText: "Invoice Number",
                             ),
                             onChanged: (value) {
-                              price[i] = int.tryParse(value)!;
+                              invoice = value;
                             },
                           ),
                         ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(8),
+                  margin: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.orangeAccent.withOpacity(0.2),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Center(
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("Date Of Invoice"),
+                          ),
+                        ),
                       ),
-                    const SizedBox(
-                      height: 20,
+                      Center(
+                        child: SizedBox(
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              counterText: "Date Of Invoice",
+                            ),
+                            keyboardType: TextInputType.datetime,
+                            onChanged: (value) {
+                              date = value;
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(8),
+                  margin: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.orangeAccent.withOpacity(0.7),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Center(
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("Name"),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Material(
+                                    child: ListView(
+                                      children: [
+                                        for (var x
+                                            in ExcelDatabaseOperations.data)
+                                          InkWell(
+                                            onTap: () {
+                                              name.text = x[0];
+                                              address.text = x[1];
+                                              gstIn.text = x[2];
+                                              setState(() {});
+                                              Navigator.pop(context);
+                                            },
+                                            child: Column(
+                                              children: [
+                                                ListTile(
+                                                  title: Text(x[0]),
+                                                  isThreeLine: true,
+                                                  subtitle: Text(x[1]),
+                                                ),
+                                                Divider(),
+                                              ],
+                                            ),
+                                          )
+                                      ],
+                                    ),
+                                  );
+                                });
+                          },
+                          child: TextField(
+                            enabled: false,
+                            controller: name,
+                            decoration: const InputDecoration(
+                              counterText: "Name",
+                            ),
+                            textCapitalization: TextCapitalization.characters,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(8),
+                  margin: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.orangeAccent.withOpacity(0.2),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Center(
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("Address"),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: SizedBox(
+                          child: TextField(
+                            controller: address,
+                            decoration: const InputDecoration(
+                              counterText: "Address",
+                            ),
+                            textCapitalization: TextCapitalization.characters,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(8),
+                  margin: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.orangeAccent.withOpacity(0.7),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Center(
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("GST No."),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: SizedBox(
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              counterText: "GST Number",
+                            ),
+                            controller: gstIn,
+                            textCapitalization: TextCapitalization.characters,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(8),
+                  margin: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.orangeAccent.withOpacity(0.2),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Center(
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("CGST"),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: SizedBox(
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              counterText: "CGST",
+                            ),
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              cgst = int.tryParse(value)!;
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(8),
+                  margin: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.orangeAccent.withOpacity(0.7),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Center(
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("SGST"),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: SizedBox(
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              counterText: "SGST",
+                            ),
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              sgst = int.tryParse(value)!;
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: SizedBox(
+                        width: double.infinity,
+                        child: Center(child: Text("S.No."))),
+                  ),
+                ),
+                Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(8),
+                    margin: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.orangeAccent.withOpacity(0.2),
                     ),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Center(
-                            child: Card(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text("Quantity"),
-                              ),
-                            ),
-                          ),
-                          for (int i = 0; i < price.length; ++i)
-                            Center(
-                              child: Container(
-                                constraints:
-                                    const BoxConstraints(minHeight: 60),
-                                child: TextField(
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    quantity[i] = int.tryParse(value)!;
-                                  },
+                    child: Column(
+                      children: [
+                        for (int i = 0; i < sNo; ++i)
+                          Center(
+                            child: Container(
+                              constraints: const BoxConstraints(minHeight: 60),
+                              child: TextField(
+                                maxLines: 5,
+                                minLines: 2,
+                                decoration: InputDecoration(
+                                  counterText: "Serioul ${i + 1}",
                                 ),
-                              ),
-                            ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                        ]),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Center(
-                            child: Card(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text("HSN Code"),
+                                textCapitalization:
+                                    TextCapitalization.characters,
+                                onChanged: (value) {
+                                  goods[i] = value;
+                                },
                               ),
                             ),
                           ),
-                          for (int i = 0; i < sNo; ++i)
-                            Center(
-                              child: Container(
-                                constraints:
-                                    const BoxConstraints(minHeight: 60),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    counterText: "HSN Code ${i + 1}",
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    hsn[i] = value;
-                                  },
-                                ),
-                              ),
-                            ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                        ]),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const SalesInvoice();
-                        }));
+                      ],
+                    )),
+                Card(
+                  color: Colors.orangeAccent,
+                  child: IconButton(
+                      color: Colors.white,
+                      onPressed: () {
+                        goods.add("");
+                        price.add(0);
+                        quantity.add(1);
+                        hsn.add("");
+                        ++sNo;
+                        setState(() {});
                       },
-                      child: Container(
-                        child: const Center(
-                            child: Text("Download Tax Invoice",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20))),
-                        width: 250,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.redAccent,
-                            borderRadius: BorderRadius.circular(20)),
+                      icon: const Icon(Icons.add)),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(8),
+                  margin: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.orangeAccent.withOpacity(0.2),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Center(
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("Price Of One Unit"),
+                          ),
+                        ),
                       ),
-                    )
-                  ],
+                      for (int i = 0; i < price.length; ++i)
+                        Center(
+                          child: Container(
+                            constraints: const BoxConstraints(minHeight: 60),
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                counterText: "Amount ${i + 1}",
+                              ),
+                              onChanged: (value) {
+                                price[i] = int.tryParse(value)!;
+                              },
+                            ),
+                          ),
+                        ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Center(
+                              child: Card(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text("Quantity"),
+                                ),
+                              ),
+                            ),
+                            for (int i = 0; i < price.length; ++i)
+                              Center(
+                                child: Container(
+                                  constraints:
+                                      const BoxConstraints(minHeight: 60),
+                                  child: TextField(
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      quantity[i] = int.tryParse(value)!;
+                                    },
+                                  ),
+                                ),
+                              ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                          ]),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Center(
+                              child: Card(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text("HSN Code"),
+                                ),
+                              ),
+                            ),
+                            for (int i = 0; i < sNo; ++i)
+                              Center(
+                                child: Container(
+                                  constraints:
+                                      const BoxConstraints(minHeight: 60),
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      counterText: "HSN Code ${i + 1}",
+                                    ),
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      hsn[i] = value;
+                                    },
+                                  ),
+                                ),
+                              ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                          ]),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const SalesInvoice();
+                          }));
+                        },
+                        child: Container(
+                          child: const Center(
+                            child: Text(
+                              "Download Tax Invoice",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                          width: 250,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.orangeAccent,
+                              borderRadius: BorderRadius.circular(20)),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),

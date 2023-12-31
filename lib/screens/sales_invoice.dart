@@ -850,18 +850,18 @@ class Section2 extends StatelessWidget {
                                   height: 5,
                                 ),
                                 Text(
-                                  "$name,",
+                                  "${name.text},",
                                   style: const TextStyle(),
                                 ),
                                 Text(
-                                  "$address,",
+                                  "${address.text},",
                                   style: const TextStyle(),
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
                                 Text(
-                                  "GSTIN/UIN :  $gstIn",
+                                  "GSTIN/UIN :  ${gstIn.text}",
                                   style: const TextStyle(),
                                 )
                               ],
@@ -887,18 +887,18 @@ class Section2 extends StatelessWidget {
                                   height: 5,
                                 ),
                                 Text(
-                                  "$name,",
+                                  "${name.text},",
                                   style: const TextStyle(),
                                 ),
                                 Text(
-                                  "$address,",
+                                  "${address.text},",
                                   style: const TextStyle(),
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
                                 Text(
-                                  "GSTIN/UIN :  $gstIn",
+                                  "GSTIN/UIN :  ${gstIn.text}",
                                   style: const TextStyle(),
                                 )
                               ],
