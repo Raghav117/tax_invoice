@@ -143,31 +143,76 @@ class _MyAppState extends State<MyApp> {
                             showDialog(
                                 context: context,
                                 builder: (context) {
-                                  return Material(
-                                    child: ListView(
-                                      children: [
-                                        for (var x
-                                            in ExcelDatabaseOperations.data)
-                                          InkWell(
-                                            onTap: () {
-                                              name.text = x[0];
-                                              address.text = x[1];
-                                              gstIn.text = x[2];
-                                              setState(() {});
-                                              Navigator.pop(context);
-                                            },
-                                            child: Column(
-                                              children: [
-                                                ListTile(
-                                                  title: Text(x[0]),
-                                                  isThreeLine: true,
-                                                  subtitle: Text(x[1]),
-                                                ),
-                                                Divider(),
-                                              ],
+                                  List<List<String>> searchData = [];
+                                  searchData = ExcelDatabaseOperations.data;
+                                  return StatefulBuilder(
+                                    builder: (context, setState) => Material(
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: TextField(
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  searchData =
+                                                      ExcelDatabaseOperations
+                                                          .data
+                                                          .where((list) {
+                                                    return list.any((item) =>
+                                                        item
+                                                            .toLowerCase()
+                                                            .contains(value
+                                                                .toLowerCase()));
+                                                  }).toList();
+                                                });
+                                              },
+                                              onSubmitted: (value) {
+                                                name.text = value;
+                                                address.text = "";
+                                                gstIn.text = "";
+                                                setState(() {});
+                                                Navigator.pop(context);
+                                              },
+                                              decoration: InputDecoration(
+                                                labelText: 'Search',
+                                                border: OutlineInputBorder(),
+                                              ),
                                             ),
-                                          )
-                                      ],
+                                          ),
+                                          Expanded(
+                                            child: ListView.builder(
+                                              itemCount: searchData.length,
+                                              itemBuilder: (context, index) {
+                                                return InkWell(
+                                                  onTap: () {
+                                                    name.text =
+                                                        searchData[index][0];
+                                                    address.text =
+                                                        searchData[index][1];
+                                                    gstIn.text =
+                                                        searchData[index][2];
+                                                    setState(() {});
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: ListTile(
+                                                    title: Text(
+                                                      searchData[index][0],
+                                                      style: TextStyle(
+                                                          color: Colors.black),
+                                                    ),
+                                                    isThreeLine: true,
+                                                    subtitle: Text(
+                                                      searchData[index][1],
+                                                      style: TextStyle(
+                                                          color: Colors.black),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   );
                                 });
