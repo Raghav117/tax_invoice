@@ -90,8 +90,10 @@ class _SalesInvoiceState extends State<SalesInvoice> {
             _imageFile = await screenshotController.capture();
 
             final Directory? directory =
-                await Directory("/storage/emulated/0").create(recursive: true);
-            final String path = directory!.path + "/bill.jpeg";
+                await Directory("/storage/emulated/0/bill")
+                    .create(recursive: true);
+            final String path =
+                directory!.path + "/bill_${name.text} _${invoice}.jpeg";
 
             setState(() {
               loading = true;
