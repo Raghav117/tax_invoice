@@ -1,6 +1,6 @@
 {
-    "name": "tax_invoice",
-    "short_name": "tax_invoice",
+    "name": "tax_invoice_new",
+    "short_name": "tax_invoice_new",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
