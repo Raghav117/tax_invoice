@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "144848983377",
+    "project_id": "money-inventory",
+    "storage_bucket": "money-inventory.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144848983377:android:ba7b7aa31c71af314d6f70",
+        "android_client_info": {
+          "package_name": "com.raghavg1999.inventory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "144848983377-lks2gfves3fst4qkl38qdrsnu2qufkl0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.raghavg1999.inventory",
+            "certificate_hash": "c0f549681d4365c117ee1c097543ee0f65e8d80a"
+          }
+        },
+        {
+          "client_id": "144848983377-l09bq6sdbjrf58ir38cpdm9klqubi0n2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQX8bNSILoEGhoJsoTrqV8-rCPif77RDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "118179184235971940137",
+              "client_type": 3
+            },
+            {
+              "client_id": "144848983377-r32tms3e8e6pe3rjv7dkotqogmk1l4s7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.raghavg1999.inventory"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
