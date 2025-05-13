@@ -22,8 +22,10 @@ void main() async {
   runApp(
     MaterialApp(
       home: SignInView(),
+      debugShowCheckedModeBanner: false,
       title: "Vyapar Setu",
       routes: Routes.routes,
+      theme: ThemeData(cardTheme: CardTheme(color: Colors.white)),
     ),
   );
 }

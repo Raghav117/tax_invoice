@@ -1,10 +1,15 @@
-class ProductModel {
+import 'package:tax_invoice_new/services/data/models/model_type.dart';
+
+class ProductModel extends ModelType {
   final int? id;
-  final String name;
-  final String hsnCode;
-  final double cgst;
-  final double sgst;
-  final double igst;
+  String name;
+  String hsnCode;
+  double cgst;
+  double sgst;
+  double igst;
+  double qty;
+  double price;
+  double totalPrice;
 
   ProductModel({
     this.id,
@@ -13,6 +18,9 @@ class ProductModel {
     required this.cgst,
     required this.sgst,
     required this.igst,
+    this.qty = 0,
+    this.price = 0,
+    this.totalPrice = 0,
   });
 
   Map<String, dynamic> toMap() {

@@ -90,19 +90,6 @@ class DBHelper {
 
   Future<int> updateOrganization(OrganizationModel organization) async {
     final db = await database;
-    final existing = await db.query(
-      'organizations',
-      where: 'LOWER(name) = ? AND LOWER(gstin) = ?',
-      whereArgs: [
-        organization.name.toLowerCase(),
-        organization.gstin.toLowerCase(),
-      ],
-    );
-
-    if (existing.isNotEmpty) {
-      print('Duplicate entry skipped: ${organization.toMap()}');
-      return -1;
-    }
 
     await SyncStatusManager.markSyncNeeded();
     return await db.update(
@@ -165,17 +152,6 @@ class DBHelper {
 
   Future<int> updateProduct(ProductModel product) async {
     final db = await database;
-
-    final existing = await db.query(
-      'products',
-      where: 'LOWER(name) = ? AND LOWER(hsnCode) = ?',
-      whereArgs: [product.name.toLowerCase(), product.hsnCode.toLowerCase()],
-    );
-
-    if (existing.isNotEmpty) {
-      print('Duplicate entry skipped: ${product.toMap()}');
-      return -1;
-    }
 
     await SyncStatusManager.markSyncNeeded();
 

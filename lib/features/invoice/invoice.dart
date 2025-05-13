@@ -20,45 +20,31 @@ class _TaxInvoiceState extends State<TaxInvoice> {
   ScreenshotController screenshotController = ScreenshotController();
 
   Uint8List? _imageFile;
-  int amount = 0;
   @override
   void initState() {
     super.initState();
     getPermission();
-    getQty();
-    for (var element in price) {
-      amount += element * quantity[price.indexOf(element)];
-    }
-    getTaxableAmount();
+    getAmtQty();
   }
 
-  Map<String, double> tax = {};
+  int amount = 0;
   double taxableAmount = 0;
   double cgstAmount = 0;
   double sgstAmount = 0;
   double totalTax = 0;
   int totalQty = 0;
 
-  getTaxableAmount() {
-    for (int i = 0; i < hsn.length; ++i) {
-      if (tax.containsKey(hsn[i]) == false) {
-        tax[hsn[i]] = double.parse((quantity[i] * price[i]).toString());
-      } else {
-        tax[hsn[i]] =
-            tax[hsn[i]]! + double.parse((quantity[i] * price[i]).toString());
-      }
-    }
-  }
-
-  getQty() {
-    for (var element in quantity) {
-      totalQty += element;
+  void getAmtQty() {
+    for (var element in products) {
+      totalQty += element.qty.toInt();
+      amount += (element.qty.toInt()) * (element.price.toInt());
+      element.totalPrice = element.qty * element.price;
     }
   }
 
   getPermission() async {
     await getPermissionStorage();
-    await getPermissionManageStorage();
+    // await getPermissionManageStorage();
   }
 
   getPermissionStorage() async {
@@ -86,40 +72,7 @@ class _TaxInvoiceState extends State<TaxInvoice> {
       data: MediaQuery.of(context).copyWith(textScaleFactor: 0.5),
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            _imageFile = await screenshotController.capture();
-
-            final Directory? directory = await Directory(
-              "/storage/emulated/0/Download/bill",
-            ).create(recursive: true);
-            final String path =
-                directory!.path + "/bill_${name.text} _${invoice}.jpeg";
-
-            setState(() {
-              loading = true;
-            });
-            try {
-              File file = await File(path).create(recursive: true);
-              file.writeAsBytesSync(_imageFile!);
-              setState(() {
-                loading = false;
-              });
-              Get.snackbar(
-                "File Saved Sucessfully",
-                "",
-                snackPosition: SnackPosition.BOTTOM,
-              );
-            } catch (e) {
-              setState(() {
-                loading = false;
-              });
-              Get.snackbar(
-                "Error",
-                "e.toString()",
-                snackPosition: SnackPosition.BOTTOM,
-              );
-            }
-          },
+          onPressed: onSaveCta,
           child: const Icon(Icons.share),
         ),
         body:
@@ -170,11 +123,11 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                                 color: Colors.black,
                                                 thickness: 0.5,
                                               ),
-                                              ...goods.map((e) {
+                                              ...products.map((e) {
                                                 return Column(
                                                   children: [
                                                     Text(
-                                                      (goods.indexOf(e) + 1)
+                                                      (products.indexOf(e) + 1)
                                                           .toString(),
                                                     ),
                                                     const SizedBox(height: 10),
@@ -206,7 +159,7 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                                 color: Colors.black,
                                                 thickness: 0.5,
                                               ),
-                                              ...goods.map((e) {
+                                              ...products.map((e) {
                                                 return Padding(
                                                   padding: const EdgeInsets.all(
                                                     2.0,
@@ -214,7 +167,7 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                                   child: Column(
                                                     children: [
                                                       Text(
-                                                        e,
+                                                        e.name,
                                                         style: const TextStyle(
                                                           fontSize: 12,
                                                         ),
@@ -245,14 +198,16 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                                 color: Colors.black,
                                                 thickness: 0.5,
                                               ),
-                                              ...hsn.map((e) {
+                                              ...products.map((e) {
                                                 return Padding(
                                                   padding: const EdgeInsets.all(
                                                     2.0,
                                                   ),
                                                   child: Column(
                                                     children: [
-                                                      Text(e.toString()),
+                                                      Text(
+                                                        e.hsnCode.toString(),
+                                                      ),
                                                       const SizedBox(height: 5),
                                                     ],
                                                   ),
@@ -277,10 +232,10 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                                 color: Colors.black,
                                                 thickness: 0.5,
                                               ),
-                                              ...quantity.map((e) {
+                                              ...products.map((e) {
                                                 return Column(
                                                   children: [
-                                                    Text(e.toString()),
+                                                    Text(e.qty.toString()),
                                                     const SizedBox(height: 10),
                                                   ],
                                                 );
@@ -304,7 +259,7 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                                 color: Colors.black,
                                                 thickness: 0.5,
                                               ),
-                                              ...goods.map((e) {
+                                              ...products.map((e) {
                                                 return Column(
                                                   children: const [
                                                     Text("Pcs."),
@@ -333,14 +288,14 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                                 color: Colors.black,
                                                 thickness: 0.5,
                                               ),
-                                              ...price.map((e) {
+                                              ...products.map((e) {
                                                 return Padding(
                                                   padding: const EdgeInsets.all(
                                                     2.0,
                                                   ),
                                                   child: Column(
                                                     children: [
-                                                      Text(e.toString()),
+                                                      Text(e.price.toString()),
                                                       const SizedBox(height: 5),
                                                     ],
                                                   ),
@@ -367,7 +322,7 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                                 color: Colors.black,
                                                 thickness: 0.5,
                                               ),
-                                              ...price.map((e) {
+                                              ...products.map((e) {
                                                 return Padding(
                                                   padding: const EdgeInsets.all(
                                                     2.0,
@@ -381,11 +336,7 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                                     children: [
                                                       Text(
                                                         '₹' +
-                                                            (e *
-                                                                    quantity[price
-                                                                        .indexOf(
-                                                                          e,
-                                                                        )])
+                                                            (e.price * e.qty)
                                                                 .toString(),
                                                       ),
                                                       const SizedBox(height: 5),
@@ -422,9 +373,11 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          ...List.generate(tax.length, (index) {
+                                          ...List.generate(products.length, (
+                                            index,
+                                          ) {
                                             return Text(
-                                              tax.keys.elementAt(index),
+                                              products[index].hsnCode,
                                             );
                                           }),
                                           const Text(
@@ -451,8 +404,12 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          ...List.generate(tax.length, (index) {
-                                            return Text("${cgst + sgst}");
+                                          ...List.generate(products.length, (
+                                            index,
+                                          ) {
+                                            return Text(
+                                              "${products[index].cgst + products[index].sgst}",
+                                            );
                                           }),
                                           const Text(
                                             " ",
@@ -478,19 +435,21 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          ...tax.values.map((e) {
-                                            if (tax.values.toList().indexOf(
-                                                  e,
-                                                ) ==
-                                                0) {
+                                          ...products.map((e) {
+                                            if (products.indexOf(e) == 0) {
                                               taxableAmount = 0;
                                             }
+                                            final thisTaxableAmount =
+                                                (e.totalPrice *
+                                                    100 /
+                                                    (100 + e.cgst + e.sgst));
                                             taxableAmount =
                                                 taxableAmount +
-                                                (e * 100 / (100 + cgst + sgst));
+                                                thisTaxableAmount;
                                             return Text(
-                                              (e * 100 / (100 + cgst + sgst))
-                                                  .toStringAsFixed(2),
+                                              thisTaxableAmount.toStringAsFixed(
+                                                2,
+                                              ),
                                             );
                                           }).toList(),
                                           Text(
@@ -517,24 +476,20 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          ...tax.values.map((e) {
-                                            if (tax.values.toList().indexOf(
-                                                  e,
-                                                ) ==
+                                          ...products.map((e) {
+                                            if (products.toList().indexOf(e) ==
                                                 0) {
                                               cgstAmount = 0;
                                             }
-                                            cgstAmount +=
-                                                (e *
+                                            final thisCgstAmount =
+                                                (e.totalPrice *
                                                     100 /
-                                                    (100 + cgst + sgst)) *
-                                                cgst /
+                                                    (100 + e.cgst + e.sgst)) *
+                                                e.cgst /
                                                 100;
+                                            cgstAmount += thisCgstAmount;
                                             return Text(
-                                              ((e * 100 / (100 + cgst + sgst)) *
-                                                      cgst /
-                                                      100)
-                                                  .toStringAsFixed(2),
+                                              thisCgstAmount.toStringAsFixed(2),
                                             );
                                           }).toList(),
                                           Text(
@@ -561,24 +516,20 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          ...tax.values.map((e) {
-                                            if (tax.values.toList().indexOf(
-                                                  e,
-                                                ) ==
+                                          ...products.map((e) {
+                                            if (products.toList().indexOf(e) ==
                                                 0) {
                                               sgstAmount = 0;
                                             }
-                                            sgstAmount +=
-                                                (e *
+                                            final thisSgstAmount =
+                                                (e.totalPrice *
                                                     100 /
-                                                    (100 + cgst + sgst)) *
-                                                sgst /
+                                                    (100 + e.cgst + e.sgst)) *
+                                                e.sgst /
                                                 100;
+                                            sgstAmount += thisSgstAmount;
                                             return Text(
-                                              ((e * 100 / (100 + cgst + sgst)) *
-                                                      sgst /
-                                                      100)
-                                                  .toStringAsFixed(2),
+                                              thisSgstAmount.toStringAsFixed(2),
                                             );
                                           }).toList(),
                                           Text(
@@ -605,24 +556,22 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          ...tax.values.map((e) {
-                                            if (tax.values.toList().indexOf(
-                                                  e,
-                                                ) ==
+                                          ...products.map((e) {
+                                            if (products.toList().indexOf(e) ==
                                                 0) {
                                               totalTax = 0;
                                             }
-                                            totalTax +=
-                                                (e *
+                                            final thisTotalTaxAmt =
+                                                (e.totalPrice *
                                                     100 /
-                                                    (100 + cgst + sgst)) *
-                                                (cgst + sgst) /
+                                                    (100 + e.cgst + e.sgst)) *
+                                                (e.cgst + e.sgst) /
                                                 100;
+                                            totalTax += thisTotalTaxAmt;
                                             return Text(
-                                              ((e * 100 / (100 + cgst + sgst)) *
-                                                      (cgst + sgst) /
-                                                      100)
-                                                  .toStringAsFixed(2),
+                                              thisTotalTaxAmt.toStringAsFixed(
+                                                2,
+                                              ),
                                             );
                                           }).toList(),
                                           Text(
@@ -648,6 +597,35 @@ class _TaxInvoiceState extends State<TaxInvoice> {
                 ),
       ),
     );
+  }
+
+  void onSaveCta() async {
+    _imageFile = await screenshotController.capture();
+
+    final Directory? directory = await Directory(
+      "/storage/emulated/0/Download/bill",
+    ).create(recursive: true);
+    final String path = directory!.path + "/bill_${name.text} _${invoice}.jpeg";
+
+    setState(() {
+      loading = true;
+    });
+    try {
+      File file = await File(path).create(recursive: true);
+      file.writeAsBytesSync(_imageFile!);
+      setState(() {
+        loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+      Get.snackbar(
+        "Error",
+        "e.toString()",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }
 

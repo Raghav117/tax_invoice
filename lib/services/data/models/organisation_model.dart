@@ -1,4 +1,6 @@
-class OrganizationModel {
+import 'package:tax_invoice_new/services/data/models/model_type.dart';
+
+class OrganizationModel extends ModelType {
   final int? id;
   final String name;
   final String address;
