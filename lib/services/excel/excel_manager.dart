@@ -36,15 +36,15 @@ class ExcelManager {
       int count = 0;
       for (var row in sheet.rows) {
         final name = row[0]?.value?.toString() ?? '';
-        final gstin = row[1]?.value?.toString() ?? '';
-        final address = row[2]?.value?.toString() ?? '';
+        final gstin = row[2]?.value?.toString() ?? '';
+        final address = row[1]?.value?.toString() ?? '';
 
         if (name.isEmpty && gstin.isEmpty && address.isEmpty) continue;
 
         final org = OrganizationModel(
           name: name,
-          gstin: gstin,
           address: address,
+          gstin: gstin,
         );
         await DBHelper().insertOrganization(
           org,
@@ -70,7 +70,7 @@ class ExcelManager {
 
     // Data rows
     for (var org in organisations) {
-      sheet.appendRow([org.name, org.gstin, org.address]);
+      sheet.appendRow([org.name, org.address, org.gstin]);
     }
 
     final downloadDir = Directory("/storage/emulated/0/Download");

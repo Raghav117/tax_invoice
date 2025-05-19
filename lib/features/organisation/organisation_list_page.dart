@@ -128,13 +128,13 @@ class _OrganisationListPageState extends State<OrganisationListPage> {
                                           Divider(),
                                           SizedBox(height: 4),
                                           Text(
-                                            org.gstin,
+                                            org.address,
                                             style: TextStyle(fontSize: 20),
                                           ),
                                           Divider(),
                                           SizedBox(height: 4),
                                           Text(
-                                            org.address,
+                                            org.gstin,
                                             style: TextStyle(fontSize: 16),
                                           ),
                                         ],

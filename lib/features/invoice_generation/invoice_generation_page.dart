@@ -390,16 +390,16 @@ class _InvoiceGenerationPageState extends State<InvoiceGenerationPage> {
                                 },
                                 onTextSubmitted: (value) {
                                   name.text = value;
+                                  gstin.text = "";
                                   address.text = "";
-                                  gstIn.text = "";
                                   setState(() {});
                                   Navigator.pop(context);
                                 },
                                 onSelectCard: (value) {
                                   value = value as OrganizationModel;
                                   name.text = value.name;
+                                  gstin.text = value.gstin;
                                   address.text = value.address;
-                                  gstIn.text = value.gstin;
                                   setState(() {});
                                   Navigator.pop(context);
                                 },
@@ -423,26 +423,6 @@ class _InvoiceGenerationPageState extends State<InvoiceGenerationPage> {
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(
-                    "GST No.",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-            ),
-            Center(
-              child: SizedBox(
-                child: TextField(
-                  decoration: const InputDecoration(counterText: "GST Number"),
-                  controller: gstIn,
-                  textCapitalization: TextCapitalization.characters,
-                ),
-              ),
-            ),
-            const Center(
-              child: Card(
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
                     "Address",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -452,8 +432,28 @@ class _InvoiceGenerationPageState extends State<InvoiceGenerationPage> {
             Center(
               child: SizedBox(
                 child: TextField(
-                  controller: address,
                   decoration: const InputDecoration(counterText: "Address"),
+                  controller: address,
+                  textCapitalization: TextCapitalization.characters,
+                ),
+              ),
+            ),
+            const Center(
+              child: Card(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "GST No.",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: SizedBox(
+                child: TextField(
+                  controller: gstin,
+                  decoration: const InputDecoration(counterText: "GST No."),
                   textCapitalization: TextCapitalization.characters,
                 ),
               ),

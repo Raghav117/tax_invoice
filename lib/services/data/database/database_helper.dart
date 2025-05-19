@@ -75,7 +75,7 @@ class DBHelper {
     final existing = await db.query(
       'organizations',
       where: 'LOWER(name) = ? AND LOWER(gstin) = ?',
-      whereArgs: [org.name.toLowerCase(), org.gstin.toLowerCase()],
+      whereArgs: [org.name.toLowerCase(), org.address.toLowerCase()],
     );
 
     if (existing.isNotEmpty) {

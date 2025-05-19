@@ -22,8 +22,8 @@ class _OrganizationFormPageState extends State<OrganizationFormPage> {
     super.initState();
     if (widget.organization != null) {
       nameController.text = widget.organization!.name;
-      addressController.text = widget.organization!.address;
       gstinController.text = widget.organization!.gstin;
+      addressController.text = widget.organization!.address;
     }
   }
 
@@ -64,8 +64,8 @@ class _OrganizationFormPageState extends State<OrganizationFormPage> {
                   final org = OrganizationModel(
                     id: widget.organization?.id,
                     name: nameController.text.trim(),
-                    address: addressController.text.trim(),
                     gstin: gstinController.text.trim(),
+                    address: addressController.text.trim(),
                   );
 
                   if (isEditing) {

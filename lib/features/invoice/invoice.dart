@@ -823,7 +823,7 @@ class Section2 extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    "GSTIN/UIN :  ${gstIn.text}",
+                                    "GSTIN/UIN :  ${gstin.text}",
                                     style: const TextStyle(),
                                   ),
                                 ],
@@ -859,7 +859,7 @@ class Section2 extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    "GSTIN/UIN :  ${gstIn.text}",
+                                    "GSTIN/UIN :  ${gstin.text}",
                                     style: const TextStyle(),
                                   ),
                                 ],
