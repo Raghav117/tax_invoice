@@ -25,4 +25,18 @@ class OrganizationModel extends ModelType {
       address: map['gstin'],
     );
   }
+
+  OrganizationModel copyWith({
+    int? id,
+    String? name,
+    String? gstin,
+    String? address,
+  }) {
+    return OrganizationModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      gstin: gstin ?? this.gstin,
+      address: address ?? this.address,
+    );
+  }
 }

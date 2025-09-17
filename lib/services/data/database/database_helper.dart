@@ -2,10 +2,13 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:tax_invoice_new/services/data/models/organisation_model.dart';
 import 'package:tax_invoice_new/services/data/models/products_model.dart';
+import 'package:tax_invoice_new/services/data/models/invoice_model.dart';
 import 'package:tax_invoice_new/services/sync/sync_status_manager.dart';
+import 'package:tax_invoice_new/modals/global.dart';
 
 class DBHelper {
   static final DBHelper _instance = DBHelper._internal();
@@ -42,7 +45,7 @@ class DBHelper {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE organizations (
@@ -65,6 +68,37 @@ class DBHelper {
             UNIQUE(name, hsnCode)
           )
         ''');
+
+        await db.execute('''
+          CREATE TABLE invoices (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            invoice_number INTEGER NOT NULL,
+            invoice_date TEXT NOT NULL,
+            invoice_type TEXT NOT NULL,
+            customer_data TEXT NOT NULL,
+            products_data TEXT NOT NULL,
+            created_at INTEGER,
+            updated_at INTEGER,
+            UNIQUE(invoice_number, invoice_type)
+          )
+        ''');
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute('''
+            CREATE TABLE invoices (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              invoice_number INTEGER NOT NULL,
+              invoice_date TEXT NOT NULL,
+              invoice_type TEXT NOT NULL,
+              customer_data TEXT NOT NULL,
+              products_data TEXT NOT NULL,
+              created_at INTEGER,
+              updated_at INTEGER,
+              UNIQUE(invoice_number, invoice_type)
+            )
+          ''');
+        }
       },
     );
   }
@@ -171,5 +205,130 @@ class DBHelper {
   Future<int> deleteProduct(int id) async {
     final db = await database;
     return await db.delete('products', where: 'id = ?', whereArgs: [id]);
+  }
+
+  // Invoice CRUD Operations
+  Future<int> insertInvoice(InvoiceModel invoice) async {
+    final db = await database;
+    
+    // Check for duplicate invoice number
+    final existing = await db.query(
+      'invoices',
+      where: 'invoice_number = ?',
+      whereArgs: [invoice.invoiceNumber],
+    );
+    
+    if (existing.isNotEmpty) {
+      print('Duplicate invoice number: ${invoice.invoiceNumber}');
+      return -1;
+    }
+
+    await SyncStatusManager.markSyncNeeded();
+
+    // Insert invoice with JSON data
+    return await db.insert('invoices', invoice.toMap());
+  }
+
+  Future<List<InvoiceModel>> getInvoices() async {
+    final db = await database;
+    final res = await db.query(
+      'invoices',
+      orderBy: 'created_at DESC',
+    );
+    
+    return res.map((row) => InvoiceModel.fromMap(row)).toList();
+  }
+
+  Future<InvoiceModel?> getInvoiceById(int id) async {
+    final db = await database;
+    final res = await db.query(
+      'invoices',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    
+    if (res.isEmpty) return null;
+    
+    return InvoiceModel.fromMap(res.first);
+  }
+
+
+  Future<List<InvoiceModel>> searchInvoicesByNumber(int invoiceNumber) async {
+    final db = await database;
+    final res = await db.query(
+      'invoices',
+      where: 'invoice_number = ?',
+      whereArgs: [invoiceNumber],
+      orderBy: 'created_at DESC',
+    );
+    
+    return res.map((row) => InvoiceModel.fromMap(row)).toList();
+  }
+
+  Future<List<InvoiceModel>> searchInvoicesByNumberAndType(int invoiceNumber, InvoiceType invoiceType) async {
+    final db = await database;
+    final res = await db.query(
+      'invoices',
+      where: 'invoice_number = ? AND invoice_type = ?',
+      whereArgs: [invoiceNumber, invoiceType.name],
+      orderBy: 'created_at DESC',
+    );
+    
+    return res.map((row) => InvoiceModel.fromMap(row)).toList();
+  }
+
+  Future<List<InvoiceModel>> searchInvoicesByCustomer(String customerName) async {
+    final db = await database;
+    final res = await db.query(
+      'invoices',
+      where: 'customer_data LIKE ?',
+      whereArgs: ['%${customerName.toLowerCase()}%'],
+      orderBy: 'created_at DESC',
+    );
+    
+    return res.map((row) => InvoiceModel.fromMap(row)).toList();
+  }
+
+  Future<int> updateInvoice(InvoiceModel invoice) async {
+    final db = await database;
+    
+    await SyncStatusManager.markSyncNeeded();
+    
+    return await db.update(
+      'invoices',
+      invoice.toMap(),
+      where: 'id = ?',
+      whereArgs: [invoice.id],
+    );
+  }
+
+  Future<int> deleteInvoice(int id) async {
+    final db = await database;
+    await SyncStatusManager.markSyncNeeded();
+    
+    return await db.delete('invoices', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> getNextInvoiceNumber(InvoiceType invoiceType) async {
+    final db = await database;
+    
+    // Get the highest invoice number for this type
+    final res = await db.rawQuery('''
+      SELECT MAX(invoice_number) as max_number FROM invoices 
+      WHERE invoice_type = ?
+    ''', [invoiceType.name]);
+    
+    dynamic maxNumberValue = res.first['max_number'];
+    int maxNumber = 0;
+    
+    if (maxNumberValue != null) {
+      if (maxNumberValue is int) {
+        maxNumber = maxNumberValue;
+      } else if (maxNumberValue is String) {
+        maxNumber = int.tryParse(maxNumberValue) ?? 0;
+      }
+    }
+    
+    return maxNumber + 1;
   }
 }

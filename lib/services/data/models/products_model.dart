@@ -34,14 +34,31 @@ class ProductModel extends ModelType {
     };
   }
 
+  Map<String, dynamic> toWholeMap() {
+    return {
+      'id': id,
+      'name': name,
+      'hsnCode': hsnCode,
+      'cgst': cgst,
+      'sgst': sgst,
+      'igst': igst,
+      'qty': qty,
+      'price': price,
+      'total_price': totalPrice,
+    };
+  }
+
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
       id: map['id'],
-      name: map['name'],
-      hsnCode: map['hsnCode'],
-      cgst: map['cgst'],
-      sgst: map['sgst'],
-      igst: map['igst'],
+      name: map['name'] ?? '',
+      hsnCode: map['hsnCode'] ?? '',
+      cgst: (map['cgst'] ?? 0).toDouble(),
+      sgst: (map['sgst'] ?? 0).toDouble(),
+      igst: (map['igst'] ?? 0).toDouble(),
+      qty: (map['qty'] ?? 0).toDouble(),
+      price: (map['price'] ?? 0).toDouble(),
+      totalPrice: (map['total_price'] ?? 0).toDouble(),
     );
   }
 }
